@@ -86,7 +86,6 @@ public class CreatedClass extends BaseTest {
 
         System.out.println(page.locator("table").textContent());
 
-
         // Chờ đúng p chứa Lớp A2 xuất hiện
 
         page.waitForSelector("//table//tr//a//p[contains(text(),'Lớp A2')]");
