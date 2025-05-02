@@ -5,12 +5,11 @@ import com.microsoft.playwright.junit.UsePlaywright;
 import org.junit.jupiter.api.Test;
 import pages.ClassPage;
 import pages.LoginPage;
-
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @UsePlaywright
-public class CreatedClass extends BaseTest {
+public class CreateClass extends BaseTest {
     @Test
     void tc1_testAllFields_FilledApprove(){
      LoginPage loginPage = new LoginPage(page);
@@ -19,7 +18,6 @@ public class CreatedClass extends BaseTest {
      ClassPage classPage = new ClassPage(page);
      classPage.navigateToClassPage();
      classPage.clickCreateNewClass();
-
      classPage.fillClassName("Lớp A3");
      classPage.fillAge("20");
      classPage.selectCourse("Khoá Học IELTS");
@@ -36,9 +34,6 @@ public class CreatedClass extends BaseTest {
 
         classPage.searchClass("Lớp A3");
         System.out.println(page.locator("table").textContent());
-
-
-        // Chờ đúng p chứa Lớp A3 xuất hiện
 
         page.waitForSelector("//table//tr//a//p[contains(text(),'Lớp A3')]");
 
@@ -64,7 +59,7 @@ public class CreatedClass extends BaseTest {
         assertTrue(classPage.isErrorPopupVisible(), "Popup Lỗi hệ thống phải hiển thị");
     }
     @Test
-    void tc3_testRequiredFields_FilledApprove(){
+    void tc3_testRequiredFields_FilledApprove() {
         LoginPage loginPage = new LoginPage(page);
         loginPage.inputUserCredential("testadmin", "test1234");
 
@@ -72,35 +67,35 @@ public class CreatedClass extends BaseTest {
         classPage.navigateToClassPage();
         classPage.clickCreateNewClass();
 
-        classPage.fillClassName("Lớp A2");
+        String className = "Lớp A2 - " + System.currentTimeMillis();
+        System.out.println("className = " + className);
+
+        // Điền các field bắt buộc
+        classPage.fillClassName(className);
         classPage.fillAge("19");
         classPage.selectCourse("Online");
-
         classPage.addSchedule("3/19:30-21:00", "Phòng 1 - Tầng 2");
-
-        classPage.selectTeacherNN("Linh  Trang Cao");
-        classPage.timeInRoomCbx_GVNN("19:30-21:00");
-
+        classPage.selectTeacherVN("Linh  Trang Cao");
+        classPage.timeInRoomCbx_GVVN("19:30-21:00");
         classPage.clickSave();
-        classPage.searchClass("Lớp A2");
 
-        System.out.println(page.locator("table").textContent());
+        page.waitForTimeout(3000);
 
-        // Chờ đúng p chứa Lớp A2 xuất hiện
+        classPage.searchClass(className);
+        System.out.println("📄 Table Content:\n" + page.locator("table").textContent());
 
-        page.waitForSelector("//table//tr//a//p[contains(text(),'Lớp A2')]");
+        page.waitForSelector("//table//tr//p[contains(text(),'" + className + "')]");
 
-        Locator row = page.locator("//table//tr[.//p[contains(text(),'Lớp A2')]]").first();
-        String className = row.locator("td").nth(1).textContent();
-        String age = row.locator("td").nth(2).textContent();
-        String teacher = row.locator("td").nth(3).textContent();
+        Locator row = page.locator("//table//tr[.//p[contains(text(),'" + className + "')]]").first();
+        String actualClassName = row.locator("td").nth(1).textContent().trim();
+        String age = row.locator("td").nth(2).textContent().trim();
+        String teacher = row.locator("td").nth(3).textContent().trim();
 
-        assertEquals("Lớp A2", className.trim());
-        assertEquals("19", age.trim());
+        assertEquals(className, actualClassName);
+        assertEquals("19", age);
         assertTrue(teacher.contains("Linh  Trang Cao"));
-
-
     }
+
     @Test
     void tc4_testDangHocstatus_isDefault(){
         LoginPage loginPage = new LoginPage(page);
@@ -137,9 +132,7 @@ public class CreatedClass extends BaseTest {
         classPage.clickCreateNewClass();
 
         // Assert: Các trường phải trống
-        String classNameField = page.getByLabel("Tên lớp học").inputValue();
-        assertEquals("", classNameField);
-
+        String classNameField = page.getByLabel("Tên lớp học").inputValue();assertEquals("", classNameField);
         Locator ageInput = page.locator("label:text-is('Độ tuổi')").locator("..").locator("input");
         String ageValue = ageInput.inputValue();
         assertEquals("", ageValue);
@@ -161,7 +154,6 @@ public class CreatedClass extends BaseTest {
         assertTrue(campusInput.isDisabled());
 
     }
-
 }
 
 
