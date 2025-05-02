@@ -13,7 +13,7 @@ public class CreateClass extends BaseTest {
     @Test
     void tc1_testAllFields_FilledApprove(){
      LoginPage loginPage = new LoginPage(page);
-     loginPage.inputUserCredential("testadmin", "test1234");
+     loginPage.inputCredential("testadmin", "test1234");
 
      ClassPage classPage = new ClassPage(page);
      classPage.navigateToClassPage();
@@ -49,7 +49,7 @@ public class CreateClass extends BaseTest {
     @Test
     void tc2_testEmptyRequiredFields_shouldShowError(){
         LoginPage loginPage = new LoginPage(page);
-        loginPage.inputUserCredential("testadmin", "test1234");
+        loginPage.inputCredential("testadmin", "test1234");
 
         ClassPage classPage = new ClassPage(page);
         classPage.navigateToClassPage();
@@ -61,7 +61,7 @@ public class CreateClass extends BaseTest {
     @Test
     void tc3_testRequiredFields_FilledApprove() {
         LoginPage loginPage = new LoginPage(page);
-        loginPage.inputUserCredential("testadmin", "test1234");
+        loginPage.inputCredential("testadmin", "test1234");
 
         ClassPage classPage = new ClassPage(page);
         classPage.navigateToClassPage();
@@ -99,7 +99,7 @@ public class CreateClass extends BaseTest {
     @Test
     void tc4_testDangHocstatus_isDefault(){
         LoginPage loginPage = new LoginPage(page);
-        loginPage.inputUserCredential("testadmin", "test1234");
+        loginPage.inputCredential("testadmin", "test1234");
 
         ClassPage classPage = new ClassPage(page);
         classPage.navigateToClassPage();
@@ -113,7 +113,7 @@ public class CreateClass extends BaseTest {
     @Test
     void tc5_testCacheField_whenSaveBefore() {
         LoginPage loginPage = new LoginPage(page);
-        loginPage.inputUserCredential("testadmin", "test1234");
+        loginPage.inputCredential("testadmin", "test1234");
 
         ClassPage classPage = new ClassPage(page);
         classPage.navigateToClassPage();
@@ -144,7 +144,7 @@ public class CreateClass extends BaseTest {
     @Test
     void tc6_testCampus_isDisable(){
         LoginPage loginPage = new LoginPage(page);
-        loginPage.inputUserCredential("testadmin", "test1234");
+        loginPage.inputCredential("testadmin", "test1234");
 
         ClassPage classPage = new ClassPage(page);
         classPage.navigateToClassPage();

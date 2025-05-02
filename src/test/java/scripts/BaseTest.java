@@ -27,7 +27,7 @@ public class BaseTest {
 
     @AfterEach
     void tearDown() {
-        context.close(); // đóng context sẽ tự đóng page
+        context.close();
     }
 
     @AfterAll
