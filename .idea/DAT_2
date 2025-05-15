@@ -1,0 +1,120 @@
+package demo;
+
+import com.microsoft.playwright.*;
+import com.microsoft.playwright.junit.UsePlaywright;
+import com.microsoft.playwright.options.AriaRole;
+import org.junit.jupiter.api.*;
+
+import java.util.regex.Pattern;
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@UsePlaywright
+public class demo2 {
+    Playwright playwright;
+    Browser browser;
+    Page page;
+
+    @BeforeEach
+    void launchBrowser() {
+        playwright = Playwright.create();
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        page = browser.newPage();
+
+        page.navigate("https://olms.codedao.io.vn/");
+        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Email hoặc username")).fill("testadmin");
+        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Mật khẩu")).fill("test1234");
+
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Login")).click();
+        //await page.getByRole('Button').filter({ hasText: 'Cấu hình' }).getByRole('button', { name: 'Quản lí nhân viên' }).click();
+    }
+
+    @Test
+    void testcas1_Detrongcactruong_HuyBo() {
+        page.locator("text='Cấu hình'").click();
+        page.locator("text='Quản lí nhân viên'").click();
+        page.locator("text='Thêm nhân viên'").click();
+
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Huỷ bỏ")).click();
+        assertThat(page.locator("text='Thêm nhân viên'")).isVisible();
+    }
+
+    @Test
+    void test_Detrongcactruong_Luu() {
+        page.locator("text='Cấu hình'").click();
+        page.locator("text='Quản lí nhân viên'").click();
+        page.locator("text='Thêm nhân viên'").click();
+
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Lưu")).click();
+
+        // ✅ Hiện thị buộc nhập các trường màu đỏ
+    }
+
+    @Test
+    void test_Nhapcactruongbatbuoc_Luu() {
+        page.locator("text='Cấu hình'").click();
+        page.locator("text='Quản lí nhân viên'").click();
+        page.locator("text='Thêm nhân viên'").click();
+        page.locator("input[id=\":r7o:\"]").fill("Cao Thùy Linh");
+        page.locator("input[id=\":r7p:\"]").fill("Trang");
+        page.locator("input[id=\":r84:\"]").fill("0836954785");
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Phòng ban")).click();
+        page.click('label:has-text("Đào tạo")');
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("XÁC NHẬN")).click();
+    }
+
+
+    @Test
+    void test_NhapAll_Luu() {
+        page.locator("text='Cấu hình'").click();
+        page.locator("text='Quản lí nhân viên'").click();
+        page.locator("text='Thêm nhân viên'").click();
+        page.locator("input[id=\":r7o:\"]").fill("Cao Thùy Linh");
+        page.locator("input[id=\":r7p:\"]").fill("Trang");
+        page.locator("input[id=\":r84:\"]").fill("0836954785");
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Phòng ban")).click();
+        page.click('label:has-text("Đào tạo")');
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("XÁC NHẬN")).click();
+        page.locator("input[id=\":r7q:\"]").fill("10/05/1995");
+        page.locator("input[id=\":r7p:\"]").fill("Trang");
+        page.locator("input[id=\":r84:\"]").fill("0836954785");
+        page.locator("input[id=\":r7v:\"]").fill("10/10/2025");
+        page.locator("input[id=\":r81:").fill("www.com.vn");
+        page.locator("input[id=\":r82:\"]").fill("Test105");
+        page.locator("input[id=\":r83:\"]").fill("Test105");
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("XÁC NẬN")).click();
+        assertThat(page.locator("text='Thêm nhân viên'")).isVisible();
+    }
+
+    @Test
+    void test_cactruong_HUY() {
+        page.locator("text='Cấu hình'").click();
+        page.locator("text='Quản lí nhân viên'").click();
+        page.locator("text='Thêm nhân viên'").click();
+        page.locator("input[id=\":r7o:\"]").fill("Cao Thùy Linh");
+        page.locator("input[id=\":r7p:\"]").fill("Trang");
+        page.locator("input[id=\":r84:\"]").fill("0836954785");
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Phòng ban")).click();
+        page.click('label:has-text("Đào tạo")');
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("XÁC NHẬN")).click();
+        page.locator("input[id=\":r7q:\"]").fill("10/05/1995");
+        page.locator("input[id=\":r7p:\"]").fill("Trang");
+        page.locator("input[id=\":r84:\"]").fill("0836954785");
+        page.locator("input[id=\":r7v:\"]").fill("10/10/2025");
+        page.locator("input[id=\":r81:").fill("www.com.vn");
+        page.locator("input[id=\":r82:\"]").fill("Test105");
+        page.locator("input[id=\":r83:\"]").fill("Test105");
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("HUY")).click();
+        assertThat(page.locator("text='Thêm nhân viên'")).isVisible();
+    }
+
+}
+
+    @AfterEach
+    void closeBrowser() {
+        browser.close();
+        playwright.close();
+    }
+}
